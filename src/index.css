@@ -1,0 +1,156 @@
+/* ============================================================
+   RESET E BASE
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: sans-serif;
+  background: #172030;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================================
+   CARD
+   ============================================================ */
+
+main {
+  background: #1e2939;
+  border-radius: 16px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 520px;
+}
+
+/* ============================================================
+   FORMULÁRIO
+   ============================================================ */
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ff6900;
+  margin-bottom: 0.5rem;
+}
+
+/* ============================================================
+   CAMPOS
+   ============================================================ */
+
+div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+input,
+select {
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid #364153;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+input:focus,
+select:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+/* ============================================================
+   CHECKBOX
+   ============================================================ */
+
+input[type="checkbox"] {
+  width: auto;
+  cursor: pointer;
+}
+
+label:has(input[type="checkbox"]) {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+/* ============================================================
+   ERROS
+   ============================================================ */
+
+span[role="alert"] {
+  font-size: 0.8rem;
+  color: #dc2626;
+  font-weight: 500;
+}
+
+/* ============================================================
+   BOTÕES
+   ============================================================ */
+
+button[type="submit"] {
+  background: #ff6900;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.5rem;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+  background: #4338ca;
+}
+
+button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button[type="button"] {
+  background: transparent;
+  border: 1.5px solid #4f46e5;
+  color: #4f46e5;
+  border-radius: 8px;
+  padding: 0.7rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+button[type="button"]:hover {
+  background: #4f46e5;
+  color: #fff;
+}
+
+input::-ms-reveal {
+  display: block !important;
+}
