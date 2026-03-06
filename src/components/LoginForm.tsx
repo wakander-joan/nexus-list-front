@@ -5,6 +5,7 @@
 
 import { useRegisterForm } from "../hooks/useRegisterForm";
 import { InputField } from "./InputField";
+import { SubmitButton } from "./SubmitButton";
 import { SuccessMessage } from "./SuccessMessage";
 
 export function LoginForm() {
@@ -49,9 +50,9 @@ export function LoginForm() {
       />
 
 
-      <button type="submit" disabled={isSubmitting}>
+      <SubmitButton type="submit" disabled={isSubmitting}>
         {isSubmitting ? "Logando..." : "Entrar"}
-      </button>
+      </SubmitButton>
     </form>
   );
 }

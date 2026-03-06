@@ -1,25 +1,37 @@
-import { useState, type CSSProperties } from "react";
+import React, { type CSSProperties, useState } from "react";
 
-interface SubmitButtonProps {
-  label?: string;
-  onClick?: () => void;
-  disabled?: boolean;
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode;
   style?: CSSProperties;
+  hoverBackground?: string;
+  hoverColor?: string;
 }
 
-export function SubmitButton({ label = "Enviar", onClick, style,disabled = false }: SubmitButtonProps) {
-  const [isHovered, setIsHovered] = useState(false);
+export function SubmitButton({ children, style, hoverBackground = "#341dfd", hoverColor = "#ffffff", ...props }: ButtonProps) {
+  const [hovered, setHovered] = useState(false);
+
+  const defaultStyle: CSSProperties = {
+    background: hovered ? hoverBackground : "#ff6900",
+    color: hovered ? hoverColor : "#ffffff",
+    padding: "0.6rem 0.8rem",
+    border: "none",
+    borderRadius: "8px",
+    fontSize: "1.1rem",
+    fontWeight: 600,
+    transition: "background 0.2s",
+    marginTop: "0.5rem",
+    width: "100%",
+    cursor: "pointer",
+  };
 
   return (
     <button
-      type="submit"
-      onClick={onClick}
-      disabled={disabled}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      style={style}
+      style={{ ...defaultStyle, ...style }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      {...props}
     >
-      {label}
+      {children}
     </button>
   );
 }

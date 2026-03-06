@@ -5,17 +5,16 @@
 
 import { useRegisterForm } from "../hooks/useRegisterForm";
 import { InputField } from "./InputField";
-import { CheckboxField } from "./CheckboxField";
 import { SuccessMessage } from "./SuccessMessage";
+import { SubmitButton } from "./SubmitButton";
 
 export function RegisterForm() {
   const {
-    formData,
+    formData, 
     errors,
     isSubmitting,
     isSuccess,
     handleChange,
-    handleCheckbox,
     handleSubmit,
     resetSuccess,
   } = useRegisterForm();
@@ -70,18 +69,10 @@ export function RegisterForm() {
         required
         onChange={handleChange}
       />
-
-      <CheckboxField
-        id="acceptTerms"
-        label=" Li e aceito os Termos de Uso e a Política de Privacidade."
-        checked={formData.acceptTerms}
-        error={errors.acceptTerms}
-        onChange={handleCheckbox}
-      />
-
-      <button type="submit" disabled={isSubmitting}>
+  
+      <SubmitButton type="submit" disabled={isSubmitting}>
         {isSubmitting ? "Cadastrando..." : "Criar conta"}
-      </button>
+      </SubmitButton>
     </form>
   );
 }

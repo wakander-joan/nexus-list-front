@@ -5,26 +5,14 @@
 
 import { useNavigate } from "react-router-dom";
 import { LoginForm } from "../components/LoginForm.tsx";
+import { BackButton } from "../components/BackButton.tsx";
 
 export function LoginPage() {
     const navigate = useNavigate();
 
     return (
-        <main>
-            <button
-                type="button"
-                onClick={() => navigate("/")}
-                style={{ 
-                        backgroundColor: "#ffffff00", 
-                        color: "#adadad", 
-                        border: "none", 
-                        padding: "8px 16px", 
-                        borderRadius: "6px", 
-                        cursor: "pointer" 
-                    }}
-            >
-                {'< Voltar'}
-            </button>
+        <main style={{ position: "relative" }}>
+            <BackButton onClick={() => navigate("/")} />
             <LoginForm />
         </main>
     );

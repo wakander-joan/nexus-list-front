@@ -28,6 +28,7 @@ main {
   border-radius: 16px;
   padding: 2.5rem;
   width: 100%;
+  min-width: 32vw;
   max-width: 520px;
 }
 
@@ -112,22 +113,6 @@ span[role="alert"] {
    BOTÕES
    ============================================================ */
 
-button[type="submit"] {
-  background: #ff6900;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.8rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin-top: 0.5rem;
-}
-
-button[type="submit"]:hover:not(:disabled) {
-  background: #4338ca;
-}
 
 button[type="submit"]:disabled {
   opacity: 0.6;

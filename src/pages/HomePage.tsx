@@ -5,6 +5,7 @@
 
 import { useNavigate } from "react-router-dom";
 import { SubmitButton } from "../components/SubmitButton";
+import { PageHeader } from "../components/PageHeader";
 
 export function HomePage() {
     const navigate = useNavigate();
@@ -12,34 +13,35 @@ export function HomePage() {
     return (
         <main>
             <div>
-                <h1>📋 Minhas Tarefas</h1>
-                <p
-                    style={{
-                        color: "#ffffff",
-                        padding: "8px 16px"
-                    }}
-                >Organize suas listas de forma fácil</p>
+                <PageHeader
+                    text="Nexus List"
+                    imageStyle={{ width: "3rem", height: "3rem" }}
+                    textStyle={{ fontSize: "2rem", color: "#ff6900" }}
+                    style={{ display: "flex", flexDirection: "row" }}
+                />
+                <p style={{color: "#ffffff", padding: "8px 16px", textAlign: "center"}}>Organize suas listas de forma fácil</p>
             </div>
 
             <div>
-                <SubmitButton label="Entrar" onClick={() => navigate("/login")} />
                 <SubmitButton
-                    label="Cadastrar"
+                    onClick={() => navigate("/login")}
+                    style={{ width: "auto", fontSize: "1.3rem" }}
+                    hoverBackground="#ffffff"
+                    hoverColor="#000000"
+                >
+                    Entrar
+                </SubmitButton>
+
+                <SubmitButton
                     onClick={() => navigate("/cadastro")}
                     style={{
-                        background: "#341dfd",
-                        color: "#ffffff",
-                        padding: "0.8rem",
-                        border: "none",
-                        borderRadius: "8px",
-                        fontSize: "1rem",
-                        fontWeight: 600,
-                        transition: "background 0.2s",
-                        marginTop: "0.5rem",
-                        width: "100%",
-
+                        width: "auto",
+                        fontSize: "1.3rem"
                     }}
-                />
+                >
+                    Cadastrar
+                </SubmitButton>
+
             </div>
         </main>
     );

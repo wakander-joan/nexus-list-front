@@ -40,18 +40,29 @@ export function useRegisterForm() {
   // Submete o formulário
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-
-    const validationErrors = validateForm(formData);
-
-    if (hasErrors(validationErrors)) {
-      setErrors(validationErrors);
-      return;
-    }
+    console.log("handleSubmit chamado!"); // ← adicione isso
+    console.log("formData:", formData);   // ← e isso
 
     setIsSubmitting(true);
 
-    // Simula uma chamada de API (substitua pelo fetch real depois)
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const response = await fetch("https://nexus-list-production.up.railway.app/cliente/createClient", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        imgProfileKey: "",
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      setErrors({ email: error.message });
+      setIsSubmitting(false);
+      return;
+    }
+
 
     console.log("Dados enviados:", formData);
     setIsSubmitting(false);
