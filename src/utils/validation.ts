@@ -2,9 +2,6 @@
 // VALIDATION — Regras de validação do formulário
 // ============================================================
 
-// ============================================================
-// VALIDATION — Regras de validação do formulário
-// ============================================================
 import type { FormData, FormErrors } from "../types/user.types";
 
 export function validateForm(data: FormData): FormErrors {
@@ -47,6 +44,16 @@ export function validateForm(data: FormData): FormErrors {
   // Validação dos termos
   if (!data.acceptTerms) {
     errors.acceptTerms = "Você precisa aceitar os termos de uso.";
+  }
+
+  // Validação da imagem (opcional — só valida o tipo se tiver arquivo)
+  if (data.imgProfile) {
+    const allowedTypes = ["image/png", "image/jpeg", "image/webp"];
+    if (!allowedTypes.includes(data.imgProfile.type)) {
+      errors.imgProfile = "Formato inválido. Use PNG, JPG ou WEBP.";
+    } else if (data.imgProfile.size > 5 * 1024 * 1024) {
+      errors.imgProfile = "Imagem deve ter no máximo 5MB.";
+    }
   }
 
   return errors;

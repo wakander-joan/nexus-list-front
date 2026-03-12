@@ -1,14 +1,11 @@
-// ============================================================
-// TYPES — Define o formato dos dados do formulário
-// ============================================================
-
 export interface FormData {
   name: string;
   email: string;
   password: string;
   confirmPassword: string;
-  role: "admin" | "user" | "editor";
+  role: string;
   acceptTerms: boolean;
+  imgProfile: File | null;
 }
 
 export interface FormErrors {
@@ -18,4 +15,5 @@ export interface FormErrors {
   confirmPassword?: string;
   role?: string;
   acceptTerms?: string;
+  imgProfile?: string;
 }

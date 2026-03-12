@@ -13,6 +13,7 @@ const INITIAL_STATE: FormData = {
   confirmPassword: "",
   role: "user",
   acceptTerms: false,
+  imgProfile: null,
 };
 
 export function useRegisterForm() {
@@ -37,37 +38,55 @@ export function useRegisterForm() {
     setErrors((prev) => ({ ...prev, [id]: undefined }));
   }
 
+  // Atualiza a imagem de perfil
+  function handleImageChange(file: File | null) {
+    setFormData((prev) => ({ ...prev, imgProfile: file }));
+    setErrors((prev) => ({ ...prev, imgProfile: undefined }));
+  }
+
   // Submete o formulário
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log("handleSubmit chamado!"); // ← adicione isso
-    console.log("formData:", formData);   // ← e isso
 
-    setIsSubmitting(true);
-
-    const response = await fetch("https://nexus-list-production.up.railway.app/cliente/createClient", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        imgProfileKey: "",
-      }),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      setErrors({ email: error.message });
-      setIsSubmitting(false);
+    const validationErrors = validateForm(formData);
+    if (hasErrors(validationErrors)) {
+      setErrors(validationErrors);
       return;
     }
 
+    setIsSubmitting(true);
 
-    console.log("Dados enviados:", formData);
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    setFormData(INITIAL_STATE);
+    // Usa FormData nativo do browser para suportar envio de arquivo
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("email", formData.email);
+    data.append("password", formData.password);
+    if (formData.imgProfile) {
+      data.append("imgProfile", formData.imgProfile);
+    }
+
+    try {
+      const response = await fetch(
+        "https://nexus-list-production.up.railway.app/cliente/createClient",
+        {
+          method: "POST",
+          body: data, // sem Content-Type — o browser define automaticamente com boundary
+        },
+      );
+
+      if (!response.ok) {
+        const error = await response.json();
+        setErrors({ email: error.message });
+        return;
+      }
+
+      setIsSuccess(true);
+      setFormData(INITIAL_STATE);
+    } catch (err) {
+      setErrors({ email: "Erro ao conectar com o servidor. Tente novamente." });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return {
@@ -77,6 +96,7 @@ export function useRegisterForm() {
     isSuccess,
     handleChange,
     handleCheckbox,
+    handleImageChange,
     handleSubmit,
     resetSuccess: () => setIsSuccess(false),
   };

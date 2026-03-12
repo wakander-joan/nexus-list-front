@@ -7,10 +7,11 @@ import { useRegisterForm } from "../hooks/useRegisterForm";
 import { InputField } from "./InputField";
 import { SuccessMessage } from "./SuccessMessage";
 import { SubmitButton } from "./SubmitButton";
+import { ImageUploadField } from "./Imageuploadfield";
 
 export function RegisterForm() {
   const {
-    formData, 
+    formData,
     errors,
     isSubmitting,
     isSuccess,
@@ -69,7 +70,12 @@ export function RegisterForm() {
         required
         onChange={handleChange}
       />
-  
+
+      <ImageUploadField
+        onChange={(file: any) => handleChange({ target: { id: "imgProfile", value: file } } as any)}
+        error={errors.imgProfile}
+      />
+
       <SubmitButton type="submit" disabled={isSubmitting}>
         {isSubmitting ? "Cadastrando..." : "Criar conta"}
       </SubmitButton>
