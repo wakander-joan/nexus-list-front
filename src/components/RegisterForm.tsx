@@ -16,6 +16,7 @@ export function RegisterForm() {
     isSubmitting,
     isSuccess,
     handleChange,
+    handleImageChange,
     handleSubmit,
     resetSuccess,
   } = useRegisterForm();
@@ -27,6 +28,11 @@ export function RegisterForm() {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <h1>Criar conta</h1>
+
+      <ImageUploadField
+        onChange={handleImageChange}
+        error={errors.imgProfile}
+      />
 
       <InputField
         id="name"
@@ -69,11 +75,6 @@ export function RegisterForm() {
         error={errors.confirmPassword}
         required
         onChange={handleChange}
-      />
-
-      <ImageUploadField
-        onChange={(file: any) => handleChange({ target: { id: "imgProfile", value: file } } as any)}
-        error={errors.imgProfile}
       />
 
       <SubmitButton type="submit" disabled={isSubmitting}>

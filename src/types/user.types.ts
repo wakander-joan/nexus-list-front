@@ -4,7 +4,6 @@ export interface FormData {
   password: string;
   confirmPassword: string;
   role: string;
-  acceptTerms: boolean;
   imgProfile: File | null;
 }
 
@@ -14,6 +13,5 @@ export interface FormErrors {
   password?: string;
   confirmPassword?: string;
   role?: string;
-  acceptTerms?: string;
   imgProfile?: string;
 }

@@ -1,12 +1,11 @@
 // ============================================================
-// COMPONENTE — RegisterForm
-// Responsabilidade: Montar o formulário unindo todos os componentes
+// COMPONENTE — LoginForm
+// Responsabilidade: Montar o formulário de login
 // ============================================================
 
-import { useRegisterForm } from "../hooks/useRegisterForm";
+import { useLoginForm } from "../hooks/useLoginForm";
 import { InputField } from "./InputField";
 import { SubmitButton } from "./SubmitButton";
-import { SuccessMessage } from "./SuccessMessage";
 
 export function LoginForm() {
   const {
@@ -16,11 +15,14 @@ export function LoginForm() {
     isSuccess,
     handleChange,
     handleSubmit,
-    resetSuccess,
-  } = useRegisterForm();
+  } = useLoginForm();
 
   if (isSuccess) {
-    return <SuccessMessage onReset={resetSuccess} />;
+    return (
+      <div style={{ backgroundColor: "#ffffff00", textAlign: "center", padding: "1.5rem", borderRadius: "10px" }}>
+        <h2 style={{fontSize: "2rem", color: "#ffffff"}} >Login realizado com sucesso!</h2>
+      </div>
+    );
   }
 
   return (
@@ -48,7 +50,6 @@ export function LoginForm() {
         required
         onChange={handleChange}
       />
-
 
       <SubmitButton type="submit" disabled={isSubmitting}>
         {isSubmitting ? "Logando..." : "Entrar"}

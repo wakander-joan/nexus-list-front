@@ -6,13 +6,14 @@ import { useState } from "react";
 import type { FormData, FormErrors } from "../types/user.types";
 import { validateForm, hasErrors } from "../utils/validation";
 
+const API_URL = "https://nexus-list-production.up.railway.app";
+
 const INITIAL_STATE: FormData = {
   name: "",
   email: "",
   password: "",
   confirmPassword: "",
   role: "user",
-  acceptTerms: false,
   imgProfile: null,
 };
 
@@ -31,7 +32,7 @@ export function useRegisterForm() {
     setErrors((prev) => ({ ...prev, [id]: undefined }));
   }
 
-  // Atualiza o checkbox (usa "checked" em vez de "value")
+  // Atualiza o checkbox
   function handleCheckbox(e: React.ChangeEvent<HTMLInputElement>) {
     const { id, checked } = e.target;
     setFormData((prev) => ({ ...prev, [id]: checked }));
@@ -44,9 +45,30 @@ export function useRegisterForm() {
     setErrors((prev) => ({ ...prev, imgProfile: undefined }));
   }
 
+  // Passo 1: Pede ao back uma Presigned URL para o S3
+  async function getPresignedUrl(filename: string): Promise<{ url: string; key: string }> {
+    const response = await fetch(
+      `${API_URL}/s3/presigned-url?filename=${encodeURIComponent(filename)}`
+    );
+    if (!response.ok) throw new Error("Erro ao obter URL de upload.");
+    return response.json();
+  }
+
+  // Passo 2: Faz o upload da imagem DIRETO no S3 usando a Presigned URL
+  async function uploadImageToS3(uploadUrl: string, file: File): Promise<void> {
+    const response = await fetch(uploadUrl, {
+      method: "PUT",
+      headers: { "Content-Type": file.type },
+      body: file,
+    });
+    if (!response.ok) throw new Error("Erro ao fazer upload da imagem.");
+  }
+
   // Submete o formulário
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    console.log("handleSubmit chamado!"); // ← adicione
+    console.log("formData:", formData);   // ← e isso
 
     const validationErrors = validateForm(formData);
     if (hasErrors(validationErrors)) {
@@ -56,23 +78,32 @@ export function useRegisterForm() {
 
     setIsSubmitting(true);
 
-    // Usa FormData nativo do browser para suportar envio de arquivo
-    const data = new FormData();
-    data.append("name", formData.name);
-    data.append("email", formData.email);
-    data.append("password", formData.password);
-    if (formData.imgProfile) {
-      data.append("imgProfile", formData.imgProfile);
-    }
-
     try {
-      const response = await fetch(
-        "https://nexus-list-production.up.railway.app/cliente/createClient",
-        {
-          method: "POST",
-          body: data, // sem Content-Type — o browser define automaticamente com boundary
-        },
-      );
+      let imgProfileKey = "";
+
+      // Se tiver imagem, faz o upload pro S3 antes de cadastrar
+      if (formData.imgProfile) {
+        // Passo 1: Pede a Presigned URL ao back-end
+        const { url, key } = await getPresignedUrl(formData.imgProfile.name);
+
+        // Passo 2: Faz o upload direto pro S3
+        await uploadImageToS3(url, formData.imgProfile);
+
+        // Passo 3: Guarda a key para enviar no cadastro
+        imgProfileKey = key;
+      }
+
+      // Passo 4: Cadastra o usuário com a key da imagem
+      const response = await fetch(`${API_URL}/cliente/createClient`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          imgProfileKey,
+        }),
+      });
 
       if (!response.ok) {
         const error = await response.json();

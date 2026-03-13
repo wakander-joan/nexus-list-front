@@ -41,11 +41,6 @@ export function validateForm(data: FormData): FormErrors {
     errors.role = "Selecione um perfil.";
   }
 
-  // Validação dos termos
-  if (!data.acceptTerms) {
-    errors.acceptTerms = "Você precisa aceitar os termos de uso.";
-  }
-
   // Validação da imagem (opcional — só valida o tipo se tiver arquivo)
   if (data.imgProfile) {
     const allowedTypes = ["image/png", "image/jpeg", "image/webp"];
